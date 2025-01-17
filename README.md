@@ -5,11 +5,11 @@ BinBuddy is an iOS app designed to make recycling fun, engaging, and accessible.
 At the heart of the app is the raccoon mascot, named Rascal, the user's friendly guide to recycling. Through gamification, Rascal assigns tasks, offers rewards, and provides helpful insights to improve your recycling habits.
 
 **Features:**  
-AI-Powered Trash Identification: Upload or take a photo of any trash item, and Google Cloud Vision AI will analyze and determine how to recycle the item responsibly.
-Interactive Tasks: Receive fun, Rascal-approved recycling challenges and earn coins for completing them.
-Educational Insights: Learn about the impact of recycling on the environment with fun facts!
+AI-Powered Trash Identification: Upload or take a photo of any trash item, and Google Cloud Vision AI will analyze and determine how to recycle the item responsibly.  
+Interactive Tasks: Receive fun, Rascal-approved recycling challenges and earn coins for completing them.  
+Educational Insights: Learn about the impact of recycling on the environment with fun facts!  
 Gamification: Receive guidance from Rascal and earn coins from finishing tasks or recycling! Play a mini-game to understand what can and cannot be recycled and earn coins! Buy new clothes
-and knick-knacks for Rascal with the coins you earn!
+and knick-knacks for Rascal with the coins you earn!  
 Eco-Conscious Mission: Help conserve energy and reduce pollution by becoming an informed recycler.
 
 **Disclaimer:**  
