@@ -10,11 +10,11 @@ class VisionAPI {
         self.googleVisionURL = URL(string: "https://vision.googleapis.com/v1/images:annotate?key=\(apiKey)")!
     }
     
-    func analyzeImage(image: UIImage, completion: @escaping (String?) -> Void) {
+    func analyzeImage(image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
         // Convert the image to Base64
         guard let imageData = image.jpegData(compressionQuality: 0.8)?.base64EncodedString() else {
-            print("Failed to convert image to Base64.")
-            completion("Failed to process image data.")
+            let error = NSError(domain: "VisionAPI", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to Base64."])
+            completion(.failure(error))
             return
         }
         
@@ -37,8 +37,8 @@ class VisionAPI {
         
         // Serialize the JSON
         guard let httpBody = try? JSONSerialization.data(withJSONObject: jsonRequest) else {
-            print("Failed to serialize JSON payload.")
-            completion("Failed to serialize JSON payload.")
+            let error = NSError(domain: "VisionAPI", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to serialize JSON payload."])
+            completion(.failure(error))
             return
         }
         
@@ -53,14 +53,13 @@ class VisionAPI {
         // Send the request
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("Error occurred: \(error.localizedDescription)")
-                completion("Error: \(error.localizedDescription)")
+                completion(.failure(error))
                 return
             }
             
             guard let data = data else {
-                print("No data received from the Vision API.")
-                completion("No data received from the Vision API.")
+                let error = NSError(domain: "VisionAPI", code: 2, userInfo: [NSLocalizedDescriptionKey: "No data received from the Vision API."])
+                completion(.failure(error))
                 return
             }
             
@@ -71,22 +70,19 @@ class VisionAPI {
             
             // Parse the response
             do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                    print("Google Vision API Response: \(json)") // Log the API response
-                    if let responses = json["responses"] as? [[String: Any]],
-                       let labelAnnotations = responses.first?["labelAnnotations"] as? [[String: Any]] {
-                        
-                        let descriptions = labelAnnotations.compactMap { $0["description"] as? String }
-                        print("Label Annotations: \(descriptions)") // Log the label annotations
-                        completion(descriptions.joined(separator: ", "))
-                    } else {
-                        print("No labels found in the response.")
-                        completion("No labels found in the response.")
-                    }
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let responses = json["responses"] as? [[String: Any]],
+                   let labelAnnotations = responses.first?["labelAnnotations"] as? [[String: Any]] {
+                    
+                    let descriptions = labelAnnotations.compactMap { $0["description"] as? String }
+                    print("Label Annotations: \(descriptions)") // Log the label annotations
+                    completion(.success(descriptions.joined(separator: ", ")))
+                } else {
+                    let error = NSError(domain: "VisionAPI", code: 3, userInfo: [NSLocalizedDescriptionKey: "No labels found in the response."])
+                    completion(.failure(error))
                 }
             } catch {
-                print("Failed to parse response: \(error.localizedDescription)")
-                completion("Failed to parse response: \(error.localizedDescription)")
+                completion(.failure(error))
             }
         }
         

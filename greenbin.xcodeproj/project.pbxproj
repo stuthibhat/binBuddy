@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		45F5FE34FC05A4ACAF768AA4 /* Pods_greenbin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBA930D9E5A5C1A201BA3157 /* Pods_greenbin.framework */; };
+		D304F5072D3B31CF00EE6362 /* AboutPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D304F5062D3B31CF00EE6362 /* AboutPage.swift */; };
 		D3255EEE2D29DA7A004A2DA6 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3255EED2D29DA7A004A2DA6 /* IntroView.swift */; };
 		D3A5A1962D33A93D004B27BC /* loginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A5A1952D33A93D004B27BC /* loginPage.swift */; };
 		D3A5A1982D35B241004B27BC /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A5A1972D35B241004B27BC /* HomePage.swift */; };
@@ -22,6 +23,7 @@
 /* Begin PBXFileReference section */
 		A510C0CD69AF890271283216 /* Pods-greenbin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-greenbin.release.xcconfig"; path = "Target Support Files/Pods-greenbin/Pods-greenbin.release.xcconfig"; sourceTree = "<group>"; };
 		B44EB539784FD2DE46EEC099 /* Pods-greenbin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-greenbin.debug.xcconfig"; path = "Target Support Files/Pods-greenbin/Pods-greenbin.debug.xcconfig"; sourceTree = "<group>"; };
+		D304F5062D3B31CF00EE6362 /* AboutPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutPage.swift; sourceTree = "<group>"; };
 		D3255EED2D29DA7A004A2DA6 /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		D34DE3B52D35BE8000FBA5BC /* greenbin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "greenbin-Bridging-Header.h"; sourceTree = "<group>"; };
 		D3A5A1952D33A93D004B27BC /* loginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginPage.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				D3A5A1972D35B241004B27BC /* HomePage.swift */,
 				D3A5A1992D35B737004B27BC /* VisionAPI.swift */,
 				D34DE3B52D35BE8000FBA5BC /* greenbin-Bridging-Header.h */,
+				D304F5062D3B31CF00EE6362 /* AboutPage.swift */,
 			);
 			path = greenbin;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 			files = (
 				D3A5A19A2D35B737004B27BC /* VisionAPI.swift in Sources */,
 				D3E042772D2914DF00D08B4C /* ViewController.swift in Sources */,
+				D304F5072D3B31CF00EE6362 /* AboutPage.swift in Sources */,
 				D3A5A1982D35B241004B27BC /* HomePage.swift in Sources */,
 				D3255EEE2D29DA7A004A2DA6 /* IntroView.swift in Sources */,
 				D3A5A1962D33A93D004B27BC /* loginPage.swift in Sources */,

@@ -26,9 +26,12 @@ struct IntroPage: View {
     }
 }
 
-// Rascal's dialogue page with speech bubble
+// RascalPage: Displays Rascal's dialogue and transitions to the fact pages
 struct RascalPage: View {
-    @State private var currentDialogue = 0 // State to track the current dialogue
+    @State private var currentDialogue = 0
+    @State private var displayedText = ""
+    @State private var showTapToContinue = false
+    @State private var navigateToFactPage = false
 
     let dialogues = [
         "Hey there! I'm Rascal, your recycling sidekick!",
@@ -41,39 +44,73 @@ struct RascalPage: View {
             Color("Cream").edgesIgnoringSafeArea(.all) // Background color
 
             VStack {
-                // Dialogue bubble above Rascal's head
                 if currentDialogue < dialogues.count {
-                    Text(dialogues[currentDialogue])
-                        .font(.system(size: 18, weight: .medium)) // Smaller font size
-                        .foregroundColor(Color("DarkBrown"))
-                        .multilineTextAlignment(.center)
-                        .lineLimit(nil)
-                        .padding(.vertical, 10) // Adjust vertical padding
-                        .padding(.horizontal, 18) // Adjust horizontal padding to make it less wide
-                        .background(
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(Color.white)
-                                .shadow(radius: 10) // Softer shadow for a polished look
-                        )
-                        .padding(.top, 120) // Adjusted padding from top
-                        .onTapGesture {
-                            // Move to the next dialogue on tap
-                            if currentDialogue < dialogues.count - 1 {
-                                currentDialogue += 1
-                            }
+                    VStack {
+                        Text(displayedText)
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundColor(Color("DarkBrown"))
+                            .multilineTextAlignment(.center)
+                            .lineLimit(nil)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 18)
+                            .background(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .fill(Color.white)
+                                    .shadow(radius: 10)
+                            )
+                            .frame(maxWidth: 300)
+                            .padding(.top, 120)
+
+                        if showTapToContinue {
+                            Text("Click the arrow to continue")
+                                .font(.system(size: 14))
+                                .foregroundColor(Color("DarkBrown"))
+                                .padding(.top, 8)
                         }
+                    }
+                    .onTapGesture {
+                        if currentDialogue < dialogues.count - 1 {
+                            currentDialogue += 1
+                            startTypewriterEffect(for: dialogues[currentDialogue])
+                        } else {
+                            navigateToFactPage = true
+                        }
+                    }
                 }
 
-                Image("Rascal") // Ensure your Rascal image is named "Rascal"
+                Image("Rascal")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 300, height: 300)
                     .padding(.top, 50)
             }
         }
+        .onAppear {
+            startTypewriterEffect(for: dialogues[currentDialogue])
+        }
+        .background(
+            NavigationLink(destination: SlideContent(currentSlide: 1), isActive: $navigateToFactPage) {
+                EmptyView()
+            }
+        )
+    }
+
+    private func startTypewriterEffect(for text: String) {
+        displayedText = ""
+        showTapToContinue = false
+
+        let characters = Array(text)
+        for (index, char) in characters.enumerated() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.05) {
+                displayedText.append(char)
+
+                if index == characters.count - 1 {
+                    showTapToContinue = true
+                }
+            }
+        }
     }
 }
-
 
 // IntroView: Main view that handles transitions between slides
 struct IntroView: View {
@@ -100,7 +137,7 @@ struct IntroView: View {
                     SlideContent(currentSlide: currentSlide)
                 }
             }
-            
+
             // Show the arrow only after the intro page
             if !showIntroPage && currentSlide < 6 {
                 VStack {
@@ -167,6 +204,9 @@ struct SlideContent: View {
                         .padding(.top, 40) // Start text at the same position
                         .lineLimit(nil) // Ensure the text wraps correctly
                         .frame(maxWidth: .infinity, alignment: .center) // Ensure text uses available space
+                    PlantGrowingAnimationView() // Pie chart visual
+                        .frame(width: 200, height: 200)
+                        .padding(.top, 20)
                 }
             case 4:
                 VStack {
@@ -182,7 +222,6 @@ struct SlideContent: View {
                 }
             case 5:
                 VStack {
-                    // Rascal's dialogue box with the given text
                     Text("Your choices today can create a sustainable tomorrow. Let’s build a greener future, together.")
                         .font(.system(size: 18, weight: .medium)) // Smaller font size for dialogue
                         .foregroundColor(Color("DarkBrown"))
@@ -197,16 +236,15 @@ struct SlideContent: View {
                         )
                         .frame(maxWidth: 300) // Set a maximum width for the dialogue box
                         .padding(.top, 120) // Adjusted padding from top
-                        
+
                     // Rascal's image below the dialogue box
-                    Image("Rascal") // Ensure your Rascal image is named "Rascal"
+                    Image("Cookie") // Ensure your Rascal image is named "Rascal"
                         .resizable()
                         .scaledToFit()
                         .frame(width: 300, height: 300)
                         .padding(.top, 50)
                 }
-
-
+            
             case 6:
                 LoginPageView() // Show LoginPage after all the intro slides
             default:
@@ -235,7 +273,7 @@ struct PieChartView: View {
             Image("Heart")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 80, height: 80)
+                .frame(width: 120, height: 120)
                 .opacity(0.6)
         }
         .onAppear {
@@ -243,6 +281,32 @@ struct PieChartView: View {
         }
     }
 }
+
+struct PlantGrowingAnimationView: View {
+    @State private var leafScale: CGFloat = 0
+    @State private var leafRotation: Double = 0
+
+    var body: some View {
+        VStack {
+            // Leaf
+            Image(systemName: "leaf.fill")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 50, height: 50)
+                .foregroundColor(Color("Green")) // Set color to Green
+                .scaleEffect(leafScale)
+                .rotationEffect(.degrees(leafRotation))
+                .animation(.easeInOut(duration: 2), value: leafScale) // Smooth leaf animation
+        }
+        .onAppear {
+            // Leaf Growth Animation
+            leafScale = 1.5   // Leaf will grow larger
+            leafRotation = 45 // Leaf rotates a bit as it grows
+        }
+    }
+}
+
+
 
 // Houses animation view
 struct HousesAnimationView: View {
@@ -269,6 +333,8 @@ struct HousesAnimationView: View {
         }
     }
 }
+
+
 
 // Placeholder for LoginPage
 struct LoginPageView: View {
