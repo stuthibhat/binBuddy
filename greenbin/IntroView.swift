@@ -277,7 +277,7 @@ struct PieChartView: View {
                 .opacity(0.6)
         }
         .onAppear {
-            fillAmount = 0.75 // Fill the pie chart over time
+            fillAmount = 0.28 // Fill the pie chart over time
         }
     }
 }
