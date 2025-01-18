@@ -107,7 +107,7 @@ struct HomePage: View {
                 
 
                     VStack {
-                        Text("Buy something for me from the shop by taking pictures of your trash!")
+                        Text("Earn coins and buy goodies for Rascal by taking pictures to identify your trash and recycling it!")
                             .font(.system(size: 18, weight: .medium))
                             .foregroundColor(Color("DarkBrown"))
                             .multilineTextAlignment(.center)
