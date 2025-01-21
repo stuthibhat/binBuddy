@@ -1,13 +1,14 @@
 import SwiftUI
-
+// MARK: - Login Page View
 struct LoginPage: View {
-    @State private var email = ""
-    @State private var password = ""
-    @State private var currentFactIndex = 0
-    @State private var isAnimating = false
-    @State private var navigateToHome = false // Controls navigation to HomePage
-    @State private var keyboardHeight: CGFloat = 0 // Track keyboard height
-
+    @State private var email = "" // Holds the email input from the user
+        @State private var password = "" // Holds the password input from the user
+        @State private var currentFactIndex = 0 // Tracks the index of the current recycling fact being displayed
+        @State private var isAnimating = false // Controls the animation state for the fact rotation
+        @State private var navigateToHome = false // Controls navigation to the HomePage after login
+        @State private var keyboardHeight: CGFloat = 0 // Tracks the keyboard height to adjust layout when the keyboard is shown
+    
+    // Array of recycling facts to rotate through
     let facts = [
         "Recycling one aluminum can saves enough energy to power a TV for three hours!",
         "Glass and aluminum can be recycled endlessly without losing quality or purity.",
@@ -22,7 +23,7 @@ struct LoginPage: View {
         "A recycled glass container can be back on shelves as fast as 30 days!",
         "During the time it takes you to read this sentence, 50,000 12-ounce cans are made."
     ]
-
+    // MARK: - Body of the Login Page View
     var body: some View {
         NavigationView {
             VStack {
@@ -91,6 +92,7 @@ struct LoginPage: View {
                         .offset(x: isAnimating ? UIScreen.main.bounds.width : 0)
                         .animation(.easeInOut(duration: 0.6), value: isAnimating)
                 } else if index == (currentFactIndex + 1) % facts.count {
+                    // Displaying the next fact with animation when current fact is rotating out
                     Text(facts[index])
                         .font(.subheadline)
                         .fontWeight(.semibold)
@@ -167,6 +169,7 @@ struct LoginPage: View {
                 isAnimating.toggle()
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                // Update the fact index after the animation
                 currentFactIndex = (currentFactIndex + 1) % facts.count
                 isAnimating.toggle()
             }
@@ -184,7 +187,7 @@ struct LoginPage: View {
         print("Create Account action triggered")
     }
 
-    // MARK: - Keyboard Observers
+    // MARK: - Keyboard Observers (To adjust layout when keyboard appears/disappears)
     private func setupKeyboardObservers() {
         // Listen for keyboard appearance
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in

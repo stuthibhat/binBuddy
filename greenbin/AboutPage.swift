@@ -1,5 +1,5 @@
 import SwiftUI
-
+///Page explaining AI usage for a good cause
 struct AboutPage: View {
     var body: some View {
         VStack {

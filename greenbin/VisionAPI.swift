@@ -1,15 +1,33 @@
 import Foundation
 import UIKit
 
+// MARK: - VisionAPI Class
+/// This class handles interactions with the Google Vision API for image analysis
 class VisionAPI {
+    
+    // MARK: - Properties
+        
+    /// The API key used to authenticate requests to the Google Vision API.
     private let apiKey: String
+    
+    /// The URL endpoint for the Vision API to send image annotation requests.
     private let googleVisionURL: URL
     
+    // MARK: - Initializer
+        
+    /// Initializes the VisionAPI with a provided API key.
+    /// - Parameter apiKey: The API key required to access the Google Vision API.
     init(apiKey: String) {
         self.apiKey = apiKey
         self.googleVisionURL = URL(string: "https://vision.googleapis.com/v1/images:annotate?key=\(apiKey)")!
     }
     
+    // MARK: - analyzeImage Method
+    
+    /// Analyzes an image using the Google Vision API and returns label annotations.
+    /// - Parameters:
+    ///   - image: The UIImage to be analyzed.
+    ///   - completion: A closure that is called with the result of the analysis. It returns either a list of labels (as a string) or an error.
     func analyzeImage(image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
         // Convert the image to Base64
         guard let imageData = image.jpegData(compressionQuality: 0.8)?.base64EncodedString() else {

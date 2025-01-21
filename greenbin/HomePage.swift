@@ -1,9 +1,7 @@
 import SwiftUI
 import UIKit
-
-import SwiftUI
 import Vision
-
+/// HomePage view that displays the main screen of the app, including options for users to upload images, track coins, and more.
 struct HomePage: View {
     @State private var isImagePickerPresented = false
     @State private var isCameraPickerPresented = false
@@ -20,92 +18,91 @@ struct HomePage: View {
     @State private var isShopPresented = false
     @State private var purchasedItems: [String] = [] // Track purchased items
     
-    private let visionAPI = VisionAPI(apiKey: "AIzaSyCaZzxyjMgNx0Ab7gCPEbrYaZlAoLJtOl4")
+    private let visionAPI = VisionAPI(apiKey: "AIzaSyCaZzxyjMgNx0Ab7gCPEbrYaZlAoLJtOl4") // Google Vision API setup
     
     var body: some View {
-            NavigationView {
-                ZStack {
-                    VStack {
-                        // Cart and coins UI
-                        HStack {
-                            Image(systemName: "cart.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 30, height: 30)
-                                .foregroundColor(Color("DarkBrown"))
-                                .padding(.leading, 20)
-                                .onTapGesture {
-                                    isShopPresented = true
-                                }
-                                .sheet(isPresented: $isShopPresented) {
-                                    ShopView(totalCoins: $totalCoins, purchasedItems: $purchasedItems)
-                                }
-                            
-                            Spacer()
-                            
-                            Text("\(totalCoins)")
-                                .font(.headline)
-                                .foregroundColor(Color("DarkBrown"))
-                            
-                            Image(systemName: "bitcoinsign.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 30, height: 30)
-                                .foregroundColor(Color("DarkBrown"))
-                                .padding(.top, 10)
-                        }
-                        .padding(.trailing, 20)
-                        
-                        VStack {
-                            Text("Energy saved: \(savedCarbonAmount, specifier: "%.2f") kg of carbon!")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(Color("DarkBrown"))
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color("SageGreen"))
-                                .cornerRadius(10)
-                                .shadow(radius: 5)
-                                .padding(.top, 20)
-                                .padding(.horizontal)
-                        }
+        NavigationView {
+            ZStack {
+                VStack {
+                    // Cart and coins UI with options to view the shop
+                    HStack {
+                        Image(systemName: "cart.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(Color("DarkBrown"))
+                            .padding(.leading, 20)
+                            .onTapGesture {
+                                isShopPresented = true // Show the shop when the cart is tapped
+                            }
+                            .sheet(isPresented: $isShopPresented) {
+                                ShopView(totalCoins: $totalCoins, purchasedItems: $purchasedItems) // Present the shop view
+                            }
                         
                         Spacer()
                         
-                        VStack {
-                            ZStack(alignment: .topLeading) {
-                                // Raccoon Image
-                                Image("Rascal")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 300, height: 300) // Keep the raccoon image at 300x300
-                                    .clipShape(Circle())
-                                    .padding(.leading, 20) // Padding for positioning
-                                
-                                // Purchased Items (positioned on top of the raccoon image)
-                                HStack(spacing: 15) {
-                                    ForEach(purchasedItems, id: \.self) { item in
-                                        VStack {
-                                            Image(item) // Image of the purchased item
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 100, height: 100) // Adjust size as needed
-                                                .padding(5)
-                                        }
-                                        .frame(width: 120) // Ensure uniformity for each item
+                        Text("\(totalCoins)")
+                            .font(.headline)
+                            .foregroundColor(Color("DarkBrown"))
+                        
+                        Image(systemName: "bitcoinsign.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(Color("DarkBrown"))
+                            .padding(.top, 10)
+                    }
+                    .padding(.trailing, 20)
+                    
+                    // Display carbon savings and environmental impact
+                    VStack {
+                        Text("Energy saved: \(savedCarbonAmount, specifier: "%.2f") kg of carbon!")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color("DarkBrown"))
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color("SageGreen"))
+                            .cornerRadius(10)
+                            .shadow(radius: 5)
+                            .padding(.top, 20)
+                            .padding(.horizontal)
+                    }
+                    
+                    Spacer()
+                    
+                    // Display the raccoon character and any purchased items
+                    VStack {
+                        ZStack(alignment: .topLeading) {
+                            // Raccoon Image
+                            Image("Rascal")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 300, height: 300) // Fixed raccoon size
+                                .clipShape(Circle())
+                                .padding(.leading, 20)
+                            
+                            // Purchased items are displayed on top of the raccoon image
+                            HStack(spacing: 15) {
+                                ForEach(purchasedItems, id: \.self) { item in
+                                    VStack {
+                                        Image(item) // Show the image of the purchased item
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 100, height: 100)
+                                            .padding(5)
                                     }
+                                    .frame(width: 120)
                                 }
-                                .padding(.top, 165) // Adjust top padding to ensure items are positioned correctly
-                                .padding(.leading, 210) // Skew it right a bit by adding left padding
                             }
-                            .padding(.top, 20) // Padding for the whole ZStack
+                            .padding(.top, 165)
+                            .padding(.leading, 210)
                         }
-                        .padding(.horizontal) // Padding to prevent content overflow at the edges
+                        .padding(.top, 20)
+                    }
+                    .padding(.horizontal)
                     
-                    
-                    // Bottom Left About Icon (separate layer)
-                
-
+                    // Bottom section with about text and image picker options
                     VStack {
                         Text("Earn coins and buy goodies for Rascal by taking pictures to identify your trash and recycling it!")
                             .font(.system(size: 18, weight: .medium))
@@ -124,6 +121,7 @@ struct HomePage: View {
                             .padding(.horizontal, 20)
                         
                         HStack {
+                            // Camera button to take a picture
                             Button(action: { isCameraPickerPresented = true }) {
                                 Image(systemName: "camera.fill")
                                     .resizable()
@@ -134,10 +132,11 @@ struct HomePage: View {
                             }
                             .sheet(isPresented: $isCameraPickerPresented) {
                                 ImagePicker(isPresented: $isCameraPickerPresented, capturedImage: $capturedImage, sourceType: .camera) { image in
-                                    processImage(image: image)
+                                    processImage(image: image) // Process the image once captured
                                 }
                             }
                             
+                            // Photo library button to select an image from gallery
                             Button(action: { isImagePickerPresented = true }) {
                                 Image(systemName: "photo.fill")
                                     .resizable()
@@ -148,7 +147,7 @@ struct HomePage: View {
                             }
                             .sheet(isPresented: $isImagePickerPresented) {
                                 ImagePicker(isPresented: $isImagePickerPresented, capturedImage: $capturedImage, sourceType: .photoLibrary) { image in
-                                    processImage(image: image)
+                                    processImage(image: image) // Process the selected image
                                 }
                             }
                         }
@@ -158,10 +157,12 @@ struct HomePage: View {
                 .padding()
                 .background(Color("Cream").edgesIgnoringSafeArea(.all))
                 
+                // Tutorial view
                 if showTutorial {
                     TutorialView(isVisible: $showTutorial)
                 }
                 
+                // Info button for tutorial or information screen
                 VStack {
                     Spacer()
                     HStack {
@@ -176,6 +177,7 @@ struct HomePage: View {
                     }
                 }
                 
+                // Trash type identification alert
                 if showTrashTypeAlert {
                     VStack {
                         Spacer()
@@ -199,7 +201,7 @@ struct HomePage: View {
                                 .multilineTextAlignment(.center)
                             
                             Button(action: {
-                                showTrashTypeAlert = false
+                                showTrashTypeAlert = false // Close the alert
                             }) {
                                 Text("Got it!")
                                     .font(.headline)
@@ -224,6 +226,7 @@ struct HomePage: View {
         .navigationBarBackButtonHidden(true)
     }
     
+    /// Processes the image and uses the Vision API to identify the trash type.
     private func processImage(image: UIImage) {
         isProcessingImage = true
         visionAPI.analyzeImage(image: image) { result in
@@ -243,9 +246,11 @@ struct HomePage: View {
         }
     }
     
+    /// Categorizes the trash based on the identified text from the image.
     private func categorizeTrashType(from identifiedText: String) -> (String, String, Int) {
         let lowercasedText = identifiedText.lowercased()
         
+        // Categorize the trash item and provide a recycling message and coin rewards
         if lowercasedText.contains("plastic") {
             return ("Plastic", "Place your plastic item in your recycling bin, being sure to rinse them thoroughly before recycling. This bin is often color-coded blue.", 100)
         } else if lowercasedText.contains("glass") {
